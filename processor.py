@@ -8,8 +8,8 @@ class AIProcessor:
         self.headers = {
             "Authorization": f"Bearer {api_key}",
             "Content-Type": "application/json",
-            "HTTP-Referer": "https://web-summary.local",
-            "X-Title": "Web Summary"
+            "HTTP-Referer": "https://aiscraperweb.streamlit.app",
+            "X-Title": "Web Summary & Data Extractor"
         }
 
     def process(self, content: str, mode: ProcessMode, custom_prompt: str = None) -> str:

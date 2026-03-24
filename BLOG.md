@@ -239,7 +239,7 @@ Here are features planned for future versions:
 
 📦 **GitHub:** [github.com/regex000/web-scraper-ai](https://github.com/regex000/web-scraper-ai)
 
-🚀 **Live App:** Deployed on [Streamlit Community Cloud](https://share.streamlit.io)
+🚀 **Live App:** [aiscraperweb.streamlit.app](https://aiscraperweb.streamlit.app)
 
 ---
 
