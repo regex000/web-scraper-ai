@@ -1,5 +1,5 @@
 import streamlit as st
-from config import ProcessMode, FREE_MODELS, DEFAULT_MODEL
+from config import ProcessMode, FREE_MODELS, DEFAULT_MODEL, get_api_key
 from scraper import WebScraper
 from processor import AIProcessor
 from pdf_generator import PDFGenerator
@@ -126,7 +126,7 @@ if process_button:
 
         try:
             scraper = WebScraper()
-            processor = AIProcessor(model)
+            processor = AIProcessor(model, api_key=get_api_key())
             pdf_gen = PDFGenerator()
 
             # ── Scrape ──────────────────────────────────────────────────

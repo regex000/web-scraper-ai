@@ -1,14 +1,17 @@
 import os
 from enum import Enum
 
-try:
-    import streamlit as st
-    # Streamlit Cloud: key set via the Secrets UI
-    # Local dev: key read from .streamlit/secrets.toml
-    OPENROUTER_API_KEY = st.secrets["OPENROUTER_API_KEY"]
-except Exception:
-    # Fallback: read from environment variable (for CI / other hosting)
-    OPENROUTER_API_KEY = os.environ.get("OPENROUTER_API_KEY", "")
+
+def get_api_key() -> str:
+    """
+    Read the OpenRouter API key at RUNTIME (not at import time).
+    Priority: st.secrets → environment variable
+    """
+    try:
+        import streamlit as st
+        return st.secrets["OPENROUTER_API_KEY"]
+    except Exception:
+        return os.environ.get("OPENROUTER_API_KEY", "")
 
 
 class ProcessMode(Enum):

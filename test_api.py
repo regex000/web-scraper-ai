@@ -1,8 +1,8 @@
 import requests
-from config import OPENROUTER_API_KEY, OPENROUTER_BASE_URL
+from config import get_api_key, OPENROUTER_BASE_URL
 
 headers = {
-    "Authorization": f"Bearer {OPENROUTER_API_KEY}",
+    "Authorization": f"Bearer {get_api_key()}",
     "Content-Type": "application/json",
     "HTTP-Referer": "https://web-summary.local",
     "X-Title": "Web Summary"

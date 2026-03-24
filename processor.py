@@ -1,12 +1,12 @@
 import requests
-from config import OPENROUTER_API_KEY, OPENROUTER_BASE_URL, ProcessMode
+from config import OPENROUTER_BASE_URL, ProcessMode
 from config import SUMMARY_PROMPT, CUSTOM_PROMPT_TEMPLATE
 
 class AIProcessor:
-    def __init__(self, model: str):
+    def __init__(self, model: str, api_key: str):
         self.model = model
         self.headers = {
-            "Authorization": f"Bearer {OPENROUTER_API_KEY}",
+            "Authorization": f"Bearer {api_key}",
             "Content-Type": "application/json",
             "HTTP-Referer": "https://web-summary.local",
             "X-Title": "Web Summary"
