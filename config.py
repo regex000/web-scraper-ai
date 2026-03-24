@@ -1,17 +1,41 @@
 import os
+import pathlib
 from enum import Enum
 
 
 def get_api_key() -> str:
     """
-    Read the OpenRouter API key at RUNTIME (not at import time).
-    Priority: st.secrets → environment variable
+    Load OpenRouter API key via 3 methods (in priority order):
+      1. st.secrets["OPENROUTER_API_KEY"]  — Streamlit Cloud / local secrets.toml
+      2. Direct read of .streamlit/secrets.toml — reliable local fallback
+      3. OPENROUTER_API_KEY environment variable
     """
+    # ── 1. Streamlit secrets ─────────────────────────────────────────────
     try:
         import streamlit as st
-        return st.secrets["OPENROUTER_API_KEY"]
+        key = st.secrets.get("OPENROUTER_API_KEY", "")
+        if key:
+            return key
     except Exception:
-        return os.environ.get("OPENROUTER_API_KEY", "")
+        pass
+
+    # ── 2. Read secrets.toml directly (most reliable for local dev) ──────
+    try:
+        secrets_path = pathlib.Path(__file__).parent / ".streamlit" / "secrets.toml"
+        if secrets_path.exists():
+            content = secrets_path.read_text()
+            for line in content.splitlines():
+                line = line.strip()
+                if line.startswith("OPENROUTER_API_KEY"):
+                    key = line.split("=", 1)[1].strip().strip('"').strip("'")
+                    if key:
+                        return key
+    except Exception:
+        pass
+
+    # ── 3. Environment variable ──────────────────────────────────────────
+    return os.environ.get("OPENROUTER_API_KEY", "")
+
 
 
 class ProcessMode(Enum):

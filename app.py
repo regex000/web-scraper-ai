@@ -125,9 +125,19 @@ if process_button:
             url = "https://" + url
 
         try:
+            api_key = get_api_key()
+            if not api_key:
+                st.error(
+                    "❌ **API key not found.** "
+                    "Add `OPENROUTER_API_KEY` to `.streamlit/secrets.toml` "
+                    "or set it as an environment variable."
+                )
+                st.stop()
+
             scraper = WebScraper()
-            processor = AIProcessor(model, api_key=get_api_key())
+            processor = AIProcessor(model, api_key=api_key)
             pdf_gen = PDFGenerator()
+
 
             # ── Scrape ──────────────────────────────────────────────────
             if crawl_enabled:
