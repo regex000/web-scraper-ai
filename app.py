@@ -74,6 +74,22 @@ with st.sidebar:
     )
 
     st.divider()
+    st.markdown("**🔑 OpenRouter API Key**")
+    manual_api_key = st.text_input(
+        "Paste your API key",
+        type="password",
+        placeholder="sk-or-v1-...",
+        help="Get a free key at openrouter.ai — paste here to override secrets.toml"
+    )
+    if not manual_api_key:
+        auto_key = get_api_key()
+        if auto_key:
+            st.caption("✅ Key loaded from secrets.toml")
+        else:
+            st.warning("⚠️ No key found. Paste your key above.\nGet one free at [openrouter.ai](https://openrouter.ai/keys)")
+
+
+    st.divider()
     st.markdown("**About**")
     st.info(
         "Uses **Jina AI Reader** for JS-rendered pages + "
@@ -125,18 +141,20 @@ if process_button:
             url = "https://" + url
 
         try:
-            api_key = get_api_key()
+            # Sidebar input takes priority over secrets.toml
+            api_key = manual_api_key.strip() if manual_api_key else get_api_key()
             if not api_key:
                 st.error(
                     "❌ **API key not found.** "
-                    "Add `OPENROUTER_API_KEY` to `.streamlit/secrets.toml` "
-                    "or set it as an environment variable."
+                    "Paste your OpenRouter key in the sidebar, "
+                    "or get a free one at [openrouter.ai/keys](https://openrouter.ai/keys)"
                 )
                 st.stop()
 
             scraper = WebScraper()
             processor = AIProcessor(model, api_key=api_key)
             pdf_gen = PDFGenerator()
+
 
 
             # ── Scrape ──────────────────────────────────────────────────
